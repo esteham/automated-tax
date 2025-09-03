@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('taxpayers', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('tin_number', 50)->unique();
+            $table->enum('taxpayer_type', ['individual','business'])->default('individual');
+            $table->string('business_name')->nullable();
+            $table->string('business_type')->nullable();
+            $table->string('nid', 50)->nullable();
+            $table->text('address')->nullable();
+            $table->json('bank_details')->nullable();
+
+            $table->timestamps();
+
+        });
+
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('taxpayers');
+    }
+
+};

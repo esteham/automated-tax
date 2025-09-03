@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function taxpayer()
+    {
+        return $this->hasOne(\App\Models\Taxpayer::class);
+    }
+
 }
