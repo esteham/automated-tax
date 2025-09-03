@@ -33,46 +33,6 @@
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/automated-tax.git
-   cd automated-tax
-Here’s a polished **README** for your **Automated Tax** project using Laravel 12, Blade, and Spatie:
-
-````markdown
-# Automated Tax
-
-**Automated Tax** is a modern Tax Management System built using **Laravel 12**, **Blade templating**, and the **Spatie package** for role and permission management. This system helps organizations manage tax records efficiently, track payments, and control access based on user roles.
-
----
-
-## Features
-
-- **User Management**  
-  Role-based access control using **Spatie Laravel Permission**.
-  
-- **Tax Record Management**  
-  Create, update, delete, and view tax records.
-  
-- **Dashboard**  
-  Clean and intuitive dashboard using **Blade** templates.
-  
-- **Reports**  
-  Generate tax reports for analysis and auditing.
-
----
-
-## Technology Stack
-
-- **Backend:** Laravel 12  
-- **Frontend:** Blade templating engine  
-- **Authentication & Authorization:** Spatie Laravel Permission  
-- **Database:** MySQL (configurable via `.env`)  
-
----
-
-## Installation
-
-1. **Clone the repository:**
-   ```bash
    git clone https://github.com/esteham/automated-tax.git
    cd automated-tax
 ````
