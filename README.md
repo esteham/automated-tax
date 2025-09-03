@@ -35,7 +35,6 @@
    ```bash
    git clone https://github.com/esteham/automated-tax.git
    cd automated-tax
-````
 
 2. **Install dependencies:**
 
