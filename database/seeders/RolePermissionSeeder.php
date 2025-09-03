@@ -21,9 +21,11 @@ class RolePermissionSeeder extends Seeder
         }
 
         $perms = [
-            'user.manage', 'taxrule.manage', 'filing.create', 'filing.view',
-            'filing.approve', 'filing.reject', 'payment.record','report.view'
-        ];
+                'user.manage','taxrule.manage','filing.create','filing.view',
+                'filing.approve','filing.reject','payment.record','report.view',
+                'document.upload','document.view','document.delete'
+            ];
+
         foreach ($perms as $p) {
             Permission::firstOrCreate(['name' => $p]);
         }
