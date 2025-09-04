@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaxpayerController;
 use App\Http\Controllers\DocumentController;
 
+use App\Http\Livewire\TaxpayerCreate;
+use App\Http\Livewire\TaxpayerShow;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -33,6 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('taxpayers/{taxpayer}/kyc/{mediaId}', [DocumentController::class, 'destroy'])
         ->name('taxpayers.kyc.destroy')
         ->middleware('permission:document.delete');
+
+    Route::get('taxpayers/create', TaxpayerCreate::class)->name('taxpayers.create');
+    Route::get('taxpayers/{taxpayer}', TaxpayerShow::class)->name('taxpayers.show');
 });
 
 require __DIR__.'/auth.php';
