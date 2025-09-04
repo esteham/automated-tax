@@ -35,5 +35,4 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('permission:document.delete');
 });
 
-
 require __DIR__.'/auth.php';
