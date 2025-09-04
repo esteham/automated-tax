@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaxpayerController;
 use App\Http\Controllers\DocumentController;
 
-use App\Http\Livewire\TaxpayerCreate;
-use App\Http\Livewire\TaxpayerShow;
+use App\Livewire\TaxpayerCreate;
+use App\Livewire\TaxpayerShow;
 
 Route::get('/', function () {
     return view('welcome');
