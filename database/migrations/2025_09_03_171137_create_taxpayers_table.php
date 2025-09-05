@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('taxpayers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('user_id');
             $table->string('tin_number', 50)->unique();
             $table->enum('taxpayer_type', ['individual','business'])->default('individual');
             $table->string('business_name')->nullable();
@@ -23,6 +23,9 @@ return new class extends Migration
             $table->json('bank_details')->nullable();
 
             $table->timestamps();
+
+            // Foreign key constraint
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
 
