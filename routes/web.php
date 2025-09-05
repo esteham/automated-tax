@@ -26,8 +26,6 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('taxpayers', TaxpayerController::class);
-
     // KYC upload/remove
     Route::post('taxpayers/{taxpayer}/kyc', [DocumentController::class, 'store'])
         ->name('taxpayers.kyc.upload')

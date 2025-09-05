@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <div>
     <form wire:submit.prevent="save">
         <!-- Form fields for taxpayer creation -->
@@ -11,3 +14,4 @@
         <div>{{ session('message') }}</div>
     @endif
 </div>
+@endsection

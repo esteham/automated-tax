@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <div>
     <h1>Taxpayer: {{ $taxpayer->tin_number }}</h1>
     <p>Type: {{ $taxpayer->taxpayer_type }}</p>
@@ -11,3 +14,4 @@
         @endforeach
     </ul>
 </div>
+@endsection

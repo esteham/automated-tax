@@ -37,6 +37,18 @@ class TaxpayerController extends Controller
 
     }//end methoad
 
+    public function create()
+    {
+        $this->authorize('create', Taxpayer::class);
+        return view('taxpayers.create');
+    }//end method
+
+    public function show(Taxpayer $taxpayer)
+    {
+        $this->authorize('view', $taxpayer);
+        return view('taxpayers.show', compact('taxpayer'));
+    }//end method
+
     public function destroy(Taxpayer $taxpayer)
     {
         $this->authorize('delete', $taxpayer);
