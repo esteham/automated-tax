@@ -7,6 +7,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Auditor\DashboardController as AuditorDashboardController;
+use App\Http\Controllers\Tax\TaxController;
 use App\Livewire\TaxpayerCreate;
 use App\Livewire\TaxpayerShow;
 
@@ -27,7 +28,45 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Taxpayer Routes
+    // Tax Filing Routes
+    Route::prefix('tax')->name('tax.')->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [TaxController::class, 'dashboard'])->name('dashboard');
+        
+        // Tax Returns
+        Route::prefix('returns')->name('returns.')->group(function () {
+            // List all returns
+            Route::get('/', [TaxController::class, 'index'])->name('index');
+            
+            // Create new return
+            Route::get('/new', [TaxController::class, 'create'])->name('create');
+            Route::post('/', [TaxController::class, 'store'])->name('store');
+            
+            // View, edit, update, delete returns
+            Route::prefix('{taxReturn}')->group(function () {
+                Route::get('/', [TaxController::class, 'show'])->name('show');
+                Route::get('/edit', [TaxController::class, 'edit'])->name('edit');
+                Route::put('/', [TaxController::class, 'update'])->name('update');
+                Route::delete('/', [TaxController::class, 'destroy'])->name('destroy');
+                
+                // Submission and payment
+                Route::post('/submit', [TaxController::class, 'submit'])->name('submit');
+                Route::post('/pay', [TaxController::class, 'initiatePayment'])->name('pay');
+                Route::get('/payment/callback', [TaxController::class, 'paymentCallback'])->name('payment.callback');
+                
+                // Download and print
+                Route::get('/download', [TaxController::class, 'download'])->name('download');
+                Route::get('/print', [TaxController::class, 'print'])->name('print');
+            });
+            
+            // Payment verification (for admin/accountant)
+            Route::post('/verify-payment', [TaxController::class, 'verifyPayment'])
+                ->name('verify-payment')
+                ->middleware('permission:verify-payments');
+        });
+    });
+
+    // Taxpayer Management Routes
     Route::prefix('taxpayers')->group(function () {
         // KYC upload/remove
         Route::post('{taxpayer}/kyc', [DocumentController::class, 'store'])

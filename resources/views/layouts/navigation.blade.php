@@ -39,6 +39,19 @@
                             {{ __('New Tax Filing') }}
                         </x-nav-link>
                     @endcan
+                    
+                    <!-- Tax Navigation Links -->
+                    @auth
+                        <x-nav-link :href="route('tax.dashboard')" :active="request()->routeIs('tax.*')">
+                            {{ __('My Tax Returns') }}
+                        </x-nav-link>
+                        
+                        @can('file-return')
+                            <x-nav-link :href="route('tax.returns.create')" :active="request()->routeIs('tax.returns.create')">
+                                {{ __('File New Return') }}
+                            </x-nav-link>
+                        @endcan
+                    @endauth
                 </div>
             </div>
 
