@@ -23,15 +23,63 @@ class Taxpayer extends Model implements HasMedia
         'nid',
         'address',
         'bank_details',
+        'date_of_birth',
+        'gender',
+        'occupation',
+        'tax_circle',
+        'tax_zone',
     ];
 
     protected $casts = [
         'bank_details' => 'array',
+        'date_of_birth' => 'date',
+    ];
+
+    protected $appends = ['full_address'];
+
+    public const TAXPAYER_TYPES = [
+        'individual' => 'Individual',
+        'business' => 'Business',
+        'firm' => 'Firm',
+        'company' => 'Company',
+    ];
+
+    public const GENDERS = [
+        'male' => 'Male',
+        'female' => 'Female',
+        'other' => 'Other',
     ];
 
     public function user()
     {
-        return $this->beLongsTo(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function taxReturns()
+    {
+        return $this->hasMany(TaxReturn::class);
+    }
+
+    public function getFullAddressAttribute()
+    {
+        return $this->address;
+    }
+
+    public function getCurrentYearReturn()
+    {
+        $currentYear = now()->format('Y');
+        return $this->taxReturns()
+            ->where('filing_year', $currentYear)
+            ->latest()
+            ->first();
+    }
+
+    public function hasFiledForYear($year)
+    {
+        return $this->taxReturns()
+            ->where('filing_year', $year)
+            ->whereIn('status', ['submitted', 'processing', 'approved'])
+            ->exists();
     }
 
     // KYC docs collection (private disk recommended)

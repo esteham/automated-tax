@@ -21,7 +21,11 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
+        'status',
+        'otp',
+        'otp_expires_at',
     ];
 
     /**
@@ -35,21 +39,40 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'otp_expires_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var list<string>
+     */
+    protected $dates = [
+        'otp_expires_at',
+    ];
 
     public function taxpayer()
     {
-        return $this->hasOne(\App\Models\Taxpayer::class);
+        return $this->hasOne(Taxpayer::class);
+    }
+
+    public function taxReturns()
+    {
+        return $this->hasManyThrough(TaxReturn::class, Taxpayer::class);
+    }
+
+    public function hasCompletedProfile(): bool
+    {
+        return $this->taxpayer !== null && 
+               $this->taxpayer->nid !== null && 
+               $this->phone_verified_at !== null;
     }
 
 }
