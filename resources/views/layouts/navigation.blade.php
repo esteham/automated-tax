@@ -15,6 +15,30 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if(auth()->user()->hasRole('admin'))
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                            {{ __('Admin Panel') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if(auth()->user()->hasRole('accountant'))
+                        <x-nav-link :href="route('accountant.dashboard')" :active="request()->routeIs('accountant.*')">
+                            {{ __('Accountant Panel') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if(auth()->user()->hasRole('auditor'))
+                        <x-nav-link :href="route('auditor.dashboard')" :active="request()->routeIs('auditor.*')">
+                            {{ __('Auditor Panel') }}
+                        </x-nav-link>
+                    @endif
+
+                    @can('filing.create')
+                        <x-nav-link :href="route('taxpayers.create')" :active="request()->routeIs('taxpayers.create')">
+                            {{ __('New Tax Filing') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -70,6 +94,30 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @if(auth()->user()->hasRole('admin'))
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                    {{ __('Admin Panel') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if(auth()->user()->hasRole('accountant'))
+                <x-responsive-nav-link :href="route('accountant.dashboard')" :active="request()->routeIs('accountant.*')">
+                    {{ __('Accountant Panel') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if(auth()->user()->hasRole('auditor'))
+                <x-responsive-nav-link :href="route('auditor.dashboard')" :active="request()->routeIs('auditor.*')">
+                    {{ __('Auditor Panel') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @can('filing.create')
+                <x-responsive-nav-link :href="route('taxpayers.create')" :active="request()->routeIs('taxpayers.create')">
+                    {{ __('New Tax Filing') }}
+                </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->
