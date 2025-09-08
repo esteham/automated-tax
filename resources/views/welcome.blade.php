@@ -439,70 +439,77 @@
                     <p class="text-gray-600">Estimate your tax liability or refund for the current tax year</p>
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-medium mb-2">Filing Status</label>
-                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                                <option>Single</option>
-                                <option>Married Filing Jointly</option>
-                                <option>Married Filing Separately</option>
-                                <option>Head of Household</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-medium mb-2">Annual Income</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span class="text-gray-500">৳</span>
+                <div id="tax-calculator-form">
+                    @csrf
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <div class="mb-6">
+                                <label for="filing-status" class="block text-gray-700 font-medium mb-2">Filing Status</label>
+                                <select id="filing-status" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                    <option value="Single">Single</option>
+                                    <option value="Married Filing Jointly">Married Filing Jointly</option>
+                                    <option value="Married Filing Separately">Married Filing Separately</option>
+                                    <option value="Head of Household">Head of Household</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="annual-income" class="block text-gray-700 font-medium mb-2">Annual Income</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500">৳</span>
+                                    </div>
+                                    <input type="number" id="annual-income" class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your income" min="0" step="1000">
                                 </div>
-                                <input type="number" class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="0">
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="tax-year" class="block text-gray-700 font-medium mb-2">Tax Year</label>
+                                <select id="tax-year" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                    @php $currentYear = now()->year; @endphp
+                                    <option value="{{ $currentYear }}">{{ $currentYear - 1 }}-{{ $currentYear }}</option>
+                                    <option value="{{ $currentYear - 1 }}">{{ $currentYear - 2 }}-{{ $currentYear - 1 }}</option>
+                                    <option value="{{ $currentYear - 2 }}">{{ $currentYear - 3 }}-{{ $currentYear - 2 }}</option>
+                                </select>
+                            </div>
+                            
+                            <div class="text-sm text-gray-500 mt-8">
+                                <p>Enter your income above to see your estimated tax calculation.</p>
                             </div>
                         </div>
                         
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-medium mb-2">Tax Year</label>
-                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                                <option>2024-2025</option>
-                                <option>2023-2024</option>
-                                <option>2022-2023</option>
-                            </select>
-                        </div>
-                        
-                        <button class="w-full bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary-dark transition duration-300">
-                            Calculate Tax
-                        </button>
-                    </div>
-                    
-                    <div class="bg-gray-50 p-6 rounded-xl">
-                        <h3 class="text-xl font-bold mb-6">Your Estimated Tax</h3>
-                        
-                        <div class="space-y-4">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Taxable Income:</span>
-                                <span class="font-medium">৳0</span>
+                        <div class="bg-gray-50 p-6 rounded-xl">
+                            <h3 class="text-xl font-bold mb-6">Your Estimated Tax</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Taxable Income:</span>
+                                    <span id="taxable-income" class="font-medium">৳0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Tax Rate:</span>
+                                    <span id="tax-rate" class="font-medium">0%</span>
+                                </div>
+                                <div class="h-px bg-gray-200 my-3"></div>
+                                <div class="flex justify-between text-lg font-bold">
+                                    <span>Estimated Tax:</span>
+                                    <span id="estimated-tax" class="text-primary">৳0</span>
+                                </div>
+                                <div class="flex justify-between text-lg font-bold">
+                                    <span>Estimated Refund:</span>
+                                    <span id="estimated-refund" class="text-green-600">৳0</span>
+                                </div>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Tax Rate:</span>
-                                <span class="font-medium">0%</span>
+                            
+                            <!-- Tax brackets will be displayed here -->
+                            <div id="tax-brackets-container" class="mt-6"></div>
+                            
+                            <div class="mt-8 text-center">
+                                <p class="text-sm text-gray-500 mb-4">This is an estimate. For a more accurate calculation, please log in.</p>
+                                <a href="{{ route('register') }}" class="inline-block w-full bg-white border-2 border-primary text-primary py-2 px-6 rounded-lg font-medium hover:bg-primary hover:text-white transition duration-300">
+                                    Sign Up for Free
+                                </a>
                             </div>
-                            <div class="h-px bg-gray-200 my-3"></div>
-                            <div class="flex justify-between text-lg font-bold">
-                                <span>Estimated Tax:</span>
-                                <span class="text-primary">৳0</span>
-                            </div>
-                            <div class="flex justify-between text-lg font-bold">
-                                <span>Estimated Refund:</span>
-                                <span class="text-green-600">৳0</span>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-8 text-center">
-                            <p class="text-sm text-gray-500 mb-4">This is an estimate. For a more accurate calculation, please log in.</p>
-                            <a href="{{ route('register') }}" class="inline-block w-full bg-white border-2 border-primary text-primary py-2 px-6 rounded-lg font-medium hover:bg-primary hover:text-white transition duration-300">
-                                Sign Up for Free
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -550,5 +557,9 @@
             });
         });
     </script>
+    
+    @push('scripts')
+        <script src="{{ asset('js/tax-calculator.js') }}" defer></script>
+    @endpush
 </body>
 </html>

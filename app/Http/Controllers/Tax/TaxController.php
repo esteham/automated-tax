@@ -9,6 +9,7 @@ use App\Models\IncomeSource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Services\TaxCalculationService;
 
 class TaxController extends Controller
 {
@@ -113,15 +114,21 @@ class TaxController extends Controller
             }
         }
 
-        // Calculate tax (simplified calculation - should be replaced with actual tax calculation logic)
+        // Calculate tax using the TaxCalculationService
+        $taxService = new TaxCalculationService();
         $taxableIncome = max(0, $totalIncome - $totalExemptions);
-        $taxAmount = $this->calculateTax($taxableIncome, $validated['filing_type']);
+        $taxCalculation = $taxService->calculateTax($taxableIncome, $validated['filing_type']);
 
         // Update tax return with calculated values
         $taxReturn->update([
             'total_income' => $totalIncome,
             'taxable_income' => $taxableIncome,
-            'tax_amount' => $taxAmount,
+            'tax_amount' => $taxCalculation['total_tax'],
+            'calculation_details' => [
+                'tax_brackets' => $taxCalculation['tax_brackets'],
+                'effective_tax_rate' => $taxCalculation['effective_tax_rate'],
+                'calculation_date' => now()->toDateTimeString(),
+            ],
         ]);
 
         return redirect()->route('tax.returns.show', $taxReturn)
@@ -155,6 +162,10 @@ class TaxController extends Controller
             return back()->with('error', 'This return cannot be submitted.');
         }
 
+        // Recalculate tax before submission to ensure accuracy
+        $taxService = new TaxCalculationService();
+        $taxReturn = $taxService->recalculateTax($taxReturn);
+
         $taxReturn->update([
             'status' => 'submitted',
             'submitted_at' => now(),
@@ -164,27 +175,5 @@ class TaxController extends Controller
 
         return redirect()->route('tax.returns.show', $taxReturn)
             ->with('success', 'Tax return submitted successfully.');
-    }
-
-    /**
-     * Calculate tax based on taxable income and filing type.
-     * This is a simplified example - replace with actual tax calculation logic.
-     */
-    protected function calculateTax(float $taxableIncome, string $filingType): float
-    {
-        // Simplified tax calculation - replace with actual tax brackets and rates
-        if ($taxableIncome <= 300000) {
-            return 0; // No tax for income up to 300,000
-        } elseif ($taxableIncome <= 400000) {
-            return ($taxableIncome - 300000) * 0.05;
-        } elseif ($taxableIncome <= 700000) {
-            return 5000 + (($taxableIncome - 400000) * 0.1);
-        } elseif ($taxableIncome <= 1100000) {
-            return 35000 + (($taxableIncome - 700000) * 0.15);
-        } elseif ($taxableIncome <= 1600000) {
-            return 95000 + (($taxableIncome - 1100000) * 0.2);
-        } else {
-            return 195000 + (($taxableIncome - 1600000) * 0.25);
-        }
     }
 }

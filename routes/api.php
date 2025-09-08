@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TaxReturnController;
+use App\Http\Controllers\Api\TaxCalculatorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // TODO: Add more API endpoints for income sources, exemptions, payments, etc.
 });
+
+// Tax calculation API
+Route::post('/tax/calculate', [TaxCalculatorController::class, 'calculate']);
