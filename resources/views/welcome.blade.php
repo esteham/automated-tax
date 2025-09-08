@@ -233,8 +233,6 @@
                 font-size: 2rem;
             }
         }
-            background-color: #1d4ed8;
-        }
         .btn-secondary {
             display: inline-block;
             width: 100%;
