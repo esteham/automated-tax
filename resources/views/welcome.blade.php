@@ -62,6 +62,7 @@
         }
         
         .hero-content {
+            margin-top: 50px;
             position: relative;
             z-index: 1;
         }
@@ -251,38 +252,8 @@
     </style>
 </head>
 <body class="antialiased">
-    <!-- Navigation -->
-    <nav class="navbar fixed w-full z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="text-2xl font-bold text-primary flex items-center">
-                <i class="fas fa-file-invoice-dollar text-primary mr-2"></i>
-                <span>Automated Tax</span>
-            </a>
-            
-            <div class="hidden md:flex items-center space-x-6">
-                <a href="#services" class="text-gray-700 hover:text-primary transition">Services</a>
-                <a href="#how-it-works" class="text-gray-700 hover:text-primary transition">How It Works</a>
-                <a href="#about" class="text-gray-700 hover:text-primary transition">About</a>
-                <a href="#contact" class="text-gray-700 hover:text-primary transition">Contact</a>
-                
-                @auth
-                    <a href="{{ route('dashboard') }}" class="btn-primary px-6 py-2 rounded-full text-sm font-medium">
-                        Dashboard <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                @else
-                    <a href="{{ route('login') }}" class="text-primary font-medium hover:underline">Log in</a>
-                    <a href="{{ route('register') }}" class="btn-primary px-6 py-2 rounded-full text-sm font-medium">
-                        Get Started
-                    </a>
-                @endauth
-            </div>
-            
-            <!-- Mobile menu button -->
-            <button class="md:hidden text-gray-700 focus:outline-none">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
-        </div>
-    </nav>
+    <!-- Include Header Component -->
+    @include('components.header')
 
     <!-- Hero Section -->
     <section class="hero pt-20">
@@ -539,72 +510,8 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-                <div>
-                    <h3 class="footer-title">Automated Tax</h3>
-                    <p class="text-gray-400 mb-4">Making tax filing simple, fast, and secure for individuals and businesses in Bangladesh.</p>
-                    <div class="social-links flex mt-6">
-                        <a href="#" class="hover:bg-blue-600"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="hover:bg-blue-400"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="hover:bg-pink-600"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="hover:bg-blue-700"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="footer-title">Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#" class="hover:text-white">Home</a></li>
-                        <li><a href="#services" class="hover:text-white">Services</a></li>
-                        <li><a href="#how-it-works" class="hover:text-white">How It Works</a></li>
-                        <li><a href="#about" class="hover:text-white">About Us</a></li>
-                        <li><a href="#contact" class="hover:text-white">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="footer-title">Services</h3>
-                    <ul class="footer-links">
-                        <li><a href="#" class="hover:text-white">TIN Registration</a></li>
-                        <li><a href="#" class="hover:text-white">File Tax Return</a></li>
-                        <li><a href="#" class="hover:text-white">Tax Calculator</a></li>
-                        <li><a href="#" class="hover:text-white">Track Refund</a></li>
-                        <li><a href="#" class="hover:text-white">Pay Tax Online</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="footer-title">Contact Us</h3>
-                    <ul class="footer-links">
-                        <li class="flex items-start">
-                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
-                            <span>123 Tax Street, Dhaka 1212, Bangladesh</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-phone-alt mr-3 text-primary"></i>
-                            <span>+880 1234 567890</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-envelope mr-3 text-primary"></i>
-                            <span>info@automatedtax.com</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; {{ date('Y') }} Automated Tax. All rights reserved.</p>
-                <div class="mt-2 text-sm">
-                    <a href="#" class="hover:text-white mr-4">Privacy Policy</a>
-                    <a href="#" class="hover:text-white mr-4">Terms of Service</a>
-                    <a href="#" class="hover:text-white">Sitemap</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- Include Footer Component -->
+    @include('components.footer')
 
     <!-- Scripts -->
     <script>
