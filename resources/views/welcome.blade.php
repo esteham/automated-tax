@@ -70,7 +70,7 @@
         .feature-card {
             background: white;
             border-radius: 1rem;
-            padding: 2rem;
+            padding: 1.2rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             height: 100%;
@@ -79,10 +79,10 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
-        .feature-card:hover {
+        /* .feature-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
+        } */
         
         .feature-icon {
             width: 3.5rem;
@@ -253,10 +253,10 @@
 </head>
 <body class="antialiased">
     <!-- Include Header Component -->
-    @include('components.header')
+    {{-- @include('components.header') --}}
 
     <!-- Hero Section -->
-    <section class="hero pt-20">
+    {{-- <section class="hero pt-20">
         <div class="container mx-auto px-4">
             <div class="hero-content max-w-4xl mx-auto text-center">
                 <h1 class="text-4xl md:text-5xl font-bold mb-6">Simplified Tax Filing for Everyone</h1>
@@ -293,13 +293,13 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- Main Content -->
-    <main class="py-20">
+    <main class="py-8">
         <!-- Services Section -->
-        <section id="services" class="container mx-auto px-4 mb-20">
-            <div class="text-center mb-16">
+        <section id="services" class="container mx-auto mb-20">
+            <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4">Tax Services Made Simple</h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">Everything you need to file your taxes accurately and maximize your refund, all in one place.</p>
             </div>
@@ -511,7 +511,7 @@
     </main>
 
     <!-- Include Footer Component -->
-    @include('components.footer')
+    {{-- @include('components.footer') --}}
 
     <!-- Scripts -->
     <script>
