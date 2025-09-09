@@ -307,9 +307,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- TIN Registration Card -->
                 <div class="feature-card">
-                    <div class="feature-icon bg-primary-light">
+                    <!-- <div class="feature-icon bg-primary-light">
                         <i class="fas fa-id-card"></i>
-                    </div>
+                    </div> -->
                     <h3 class="text-xl font-bold mb-3">TIN Registration</h3>
                     <p class="text-gray-600 mb-6">Get your Taxpayer Identification Number (TIN) quickly and easily. Our step-by-step process makes it simple.</p>
                   
@@ -325,9 +325,9 @@
                 
                 <!-- File Return Card -->
                 <div class="feature-card">
-                    <div class="feature-icon bg-success-light">
+                    <!-- <div class="feature-icon bg-success-light">
                         <i class="fas fa-file-upload"></i>
-                    </div>
+                    </div> -->
                     <h3 class="text-xl font-bold mb-3">File Tax Return</h3>
                     <p class="text-gray-600 mb-6">File your income tax return online in minutes. Our smart forms guide you through the process.</p>
                     @auth
@@ -343,9 +343,9 @@
                 
                 <!-- Tax Calculator Card -->
                 <div class="feature-card">
-                    <div class="feature-icon bg-warning-light">
+                    <!-- <div class="feature-icon bg-warning-light">
                         <i class="fas fa-calculator"></i>
-                    </div>
+                    </div> -->
                     <h3 class="text-xl font-bold mb-3">Tax Calculator</h3>
                     <p class="text-gray-600 mb-6">Estimate your tax liability or refund with our easy-to-use tax calculator. No registration required.</p>
                     <a href="#tax-calculator" class="btn-primary">
@@ -355,9 +355,9 @@
                 
                 <!-- Track Refund Card -->
                 <div class="feature-card">
-                    <div class="feature-icon bg-primary-light">
+                    <!-- <div class="feature-icon bg-primary-light">
                         <i class="fas fa-search-dollar"></i>
-                    </div>
+                    </div> -->
                     <h3 class="text-xl font-bold mb-3">Track Refund</h3>
                     <p class="text-gray-600 mb-6">Check the status of your tax refund in real-time. Get notified the moment your refund is processed.</p>
                     <a href="#track-refund" class="btn-primary">
@@ -367,9 +367,9 @@
                 
                 <!-- Tax Payment Card -->
                 <div class="feature-card">
-                    <div class="feature-icon bg-danger-light">
+                    <!-- <div class="feature-icon bg-danger-light">
                         <i class="fas fa-credit-card"></i>
-                    </div>
+                    </div> -->
                     <h3 class="text-xl font-bold mb-3">Pay Tax Online</h3>
                     <p class="text-gray-600 mb-6">Make secure tax payments online using bKash, Nagad, or your credit/debit card.</p>
                     <a href="#pay-tax" class="btn-primary">
@@ -379,9 +379,9 @@
                 
                 <!-- Help & Support Card -->
                 <div class="feature-card">
-                    <div class="feature-icon bg-success-light">
+                    <!-- <div class="feature-icon bg-success-light">
                         <i class="fas fa-headset"></i>
-                    </div>
+                    </div> -->
                     <h3 class="text-xl font-bold mb-3">Help & Support</h3>
                     <p class="text-gray-600 mb-6">Need help? Our tax experts are available 24/7 to answer your questions and provide guidance.</p>
                     <a href="#contact" class="btn-primary">
