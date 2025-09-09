@@ -14,7 +14,12 @@ use App\Livewire\TaxpayerShow;
 // Public Routes
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
+// TIN Registration Page
+Route::get('/tin-registration', function () {
+    return view('tin.registration');
+})->name('tin.registration');
 
 // Authenticated Routes
 Route::middleware(['auth', 'verified'])->group(function () {

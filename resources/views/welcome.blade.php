@@ -312,15 +312,15 @@
                     </div>
                     <h3 class="text-xl font-bold mb-3">TIN Registration</h3>
                     <p class="text-gray-600 mb-6">Get your Taxpayer Identification Number (TIN) quickly and easily. Our step-by-step process makes it simple.</p>
-                    @auth
-                        <a href="{{ route('taxpayers.create') }}" class="btn-primary">
+                  
+                        <a href="{{ route('tin.registration') }}" class="btn-primary">
                             Register for TIN <i class="fas fa-arrow-right ml-2"></i>
                         </a>
-                    @else
+<!--                    
                         <a href="{{ route('register') }}" class="btn-primary">
                             Get Started <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    @endauth
+                        </a> -->
+                  
                 </div>
                 
                 <!-- File Return Card -->
