@@ -8,25 +8,30 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Auditor\DashboardController as AuditorDashboardController;
 use App\Http\Controllers\Tax\TaxController;
-use App\Livewire\TaxpayerCreate;
-use App\Livewire\TaxpayerShow;
 
 // Public Routes
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// TIN Registration Page
-Route::get('/tin-registration', function () {
-    return view('tin.registration');
-})->name('tin.registration');
+// TIN Registration
+Route::view('/tin-registration', 'tin.registration')->name('tin.registration');
+
+// Authentication Routes
+require __DIR__.'/auth.php';
 
 // Authenticated Routes
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Main Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    // Main Dashboard - Using Livewire Component
+    Route::get('/dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
+
+    // TIN Request Routes
+    Route::prefix('tin')
+        ->name('tin.')
+        ->group(function () {
+            Route::get('/request', \App\Livewire\Tin\TinRequestForm::class)->name('request');
+            Route::post('/request', [\App\Livewire\Tin\TinRequestForm::class, 'submitRequest'])->name('submit-request');
+        });
 
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,19 +40,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Tax Filing Routes
     Route::prefix('tax')->name('tax.')->group(function () {
-        // Dashboard
         Route::get('/dashboard', [TaxController::class, 'dashboard'])->name('dashboard');
         
         // Tax Returns
         Route::prefix('returns')->name('returns.')->group(function () {
-            // List all returns
             Route::get('/', [TaxController::class, 'index'])->name('index');
-            
-            // Create new return
             Route::get('/new', [TaxController::class, 'create'])->name('create');
             Route::post('/', [TaxController::class, 'store'])->name('store');
             
-            // View, edit, update, delete returns
             Route::prefix('{taxReturn}')->group(function () {
                 Route::get('/', [TaxController::class, 'show'])->name('show');
                 Route::get('/edit', [TaxController::class, 'edit'])->name('edit');
@@ -82,33 +82,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('taxpayers.kyc.destroy')
             ->middleware('permission:document.delete');
 
-        Route::get('/create', TaxpayerCreate::class)->name('taxpayers.create');
-        Route::get('/{taxpayer}', TaxpayerShow::class)->name('taxpayers.show');
+        Route::view('/create', 'livewire.taxpayer-create')->name('taxpayers.create');
+        Route::get('/{taxpayer}', 'App\Livewire\TaxpayerShow')->name('taxpayers.show');
     });
 
     // Admin Routes
-    Route::prefix('admin')->name('admin.')->middleware(['role:admin'])->group(function () {
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         // Add more admin routes here
     });
 
     // Accountant Routes
-    Route::prefix('accountant')->name('accountant.')->middleware(['role:accountant'])->group(function () {
+    Route::middleware(['role:accountant'])->prefix('accountant')->name('accountant.')->group(function () {
         Route::get('/dashboard', [AccountantDashboardController::class, 'index'])->name('dashboard');
         // Add more accountant routes here
     });
 
     // Auditor Routes
-    Route::prefix('auditor')->name('auditor.')->middleware(['role:auditor'])->group(function () {
+    Route::middleware(['role:auditor'])->prefix('auditor')->name('auditor.')->group(function () {
         Route::get('/dashboard', [AuditorDashboardController::class, 'index'])->name('dashboard');
         // Add more auditor routes here
     });
 });
 
-// Test Route for Blade Directives
-Route::get('/test-blade', function () {
-    return view('test-blade');
-})->middleware('auth');
-
-// Authentication Routes
-require __DIR__.'/auth.php';
+// Fallback Route
+Route::fallback(function () {
+    return view('errors.404');
+});

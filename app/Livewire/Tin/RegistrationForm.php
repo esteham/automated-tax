@@ -12,7 +12,8 @@ use Illuminate\Validation\Rule;
 class RegistrationForm extends Component
 {
     public $username;
-    public $tin_number;
+    public $security_pin;
+    public $security_pin_confirmation;
     public $email;
     public $country = 'Bangladesh';
     public $phone;
@@ -22,7 +23,7 @@ class RegistrationForm extends Component
 
     protected $rules = [
         'username' => 'required|string|max:255|unique:users',
-        'tin_number' => 'required|string|size:12|unique:tax_profiles|regex:/^\d+$/|digits:12',
+        'security_pin' => 'required|string|size:4|confirmed|regex:/^\d+$/|digits:4',
         'email' => 'required|string|email|max:255|unique:users',
         'country' => 'required|string|max:100',
         'phone' => 'required|string|max:20|unique:users',
@@ -31,16 +32,16 @@ class RegistrationForm extends Component
     ];
     
     protected $validationAttributes = [
-        'tin_number' => 'TIN number',
+        'security_pin' => 'security PIN',
     ];
     
     protected $messages = [
-        'tin_number.size' => 'The TIN number must be exactly 12 digits.',
-        'tin_number.digits' => 'The TIN number must contain only numbers.',
+        'security_pin.size' => 'The security PIN must be exactly 4 digits.',
+        'security_pin.digits' => 'The security PIN must contain only numbers.',
+        'security_pin.confirmed' => 'The security PIN confirmation does not match.',
         'terms.accepted' => 'You must accept the terms and conditions.',
         'password.confirmed' => 'The password confirmation does not match.',
     ];
-
 
     public function render()
     {
@@ -54,47 +55,46 @@ class RegistrationForm extends Component
 
     public function register()
     {
-        $validatedData = $this->validate();
+        $this->validate();
+
+        // Start a database transaction
+        DB::beginTransaction();
 
         try {
-            // Start database transaction
-            DB::beginTransaction();
-
-            // Create user
+            // Create the user
             $user = User::create([
-                'name' => $this->username,
+                'name' => $this->username, // Using username as name for simplicity
                 'username' => $this->username,
                 'email' => $this->email,
                 'phone' => $this->phone,
+                'country' => $this->country,
+                'security_pin' => $this->security_pin,
                 'password' => Hash::make($this->password),
                 'status' => 'active',
             ]);
 
             // Create tax profile
             $user->taxProfile()->create([
-                'tin_number' => $this->tin_number,
                 'country' => $this->country,
-                'registration_date' => now(),
                 'status' => 'active',
+                'taxpayer_type' => 'individual',
+                'tin_status' => 'not_requested',
             ]);
 
             // Assign default role
             $user->assignRole('taxpayer');
 
-            // Commit transaction
+            // Commit the transaction
             DB::commit();
 
-            // Log in the user
-            Auth::login($user);
-
-            // Redirect to dashboard
-            return redirect()->route('dashboard');
+            // Redirect to login with success message
+            return redirect()->route('login')->with('status', 'Registration successful! Please login to continue.');
 
         } catch (\Exception $e) {
-            // Rollback transaction on error
+            // Rollback the transaction on error
             DB::rollBack();
-            $this->addError('registration_error', 'An error occurred during registration. Please try again.');
-            \Log::error('Registration Error: ' . $e->getMessage());
+            $this->addError('registration', 'An error occurred during registration. Please try again.');
+            \Log::error('Registration error: ' . $e->getMessage());
         }
     }
 }

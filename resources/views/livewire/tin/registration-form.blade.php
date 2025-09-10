@@ -47,14 +47,23 @@
                 @enderror
             </div>
 
-            <!-- TIN Number -->
+            <!-- Security PIN -->
             <div class="col-span-2">
-                <label for="tin_number" class="block text-sm font-medium text-gray-700">TIN Number <span class="text-red-500">*</span></label>
-                <input type="text" id="tin_number" wire:model.live="tin_number" 
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('tin_number') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror">
-                @error('tin_number')
+                <label for="security_pin" class="block text-sm font-medium text-gray-700">Security PIN (4 digits) <span class="text-red-500">*</span></label>
+                <input type="password" id="security_pin" wire:model.live="security_pin" 
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('security_pin') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
+                       maxlength="4" inputmode="numeric" pattern="\d{4}">
+                @error('security_pin')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
+            </div>
+
+            <!-- Confirm Security PIN -->
+            <div class="col-span-2">
+                <label for="security_pin_confirmation" class="block text-sm font-medium text-gray-700">Confirm Security PIN <span class="text-red-500">*</span></label>
+                <input type="password" id="security_pin_confirmation" wire:model.live="security_pin_confirmation" 
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                       maxlength="4" inputmode="numeric" pattern="\d{4}">
             </div>
 
             <!-- Email -->

@@ -31,6 +31,7 @@ class User extends Authenticatable
         'username', // Made nullable in database
         'email',
         'phone',
+        'security_pin',
         'password',
         'status',
         'otp',
