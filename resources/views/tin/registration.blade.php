@@ -63,47 +63,27 @@
   </div>
 
   <!-- Main Content -->
-  <!-- Main Content -->
 <div class="container mx-auto px-4 py-8">
-  <main class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-    
-    <!-- Left Content -->
-    <div class="p-8 md:w-2/2">
-      <h1 class="text-2xl font-bold text-gray-800 mb-6">Welcome to Taxpayer's Identification Number (TIN) Registration / Cancellation</h1>
-      <p class="mb-4 text-gray-600">Welcome to the Taxpayer's Identification Number (TIN) registration portal. This platform allows you to:</p>
+  <main class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="p-8">
+      <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Taxpayer's Identification Number (TIN) Registration</h1>
       
-      <ul class="list-disc pl-6 mb-6 text-gray-600">
-        <li class="mb-2">Register for a new TIN (Taxpayer Identification Number)</li>
-        <li class="mb-2">Update your existing TIN information</li>
-        <li class="mb-2">Check the status of your TIN application</li>
-        <li class="mb-2">Download your TIN certificate</li>
-        <li>Request for TIN cancellation (if applicable)</li>
-      </ul>
-
-      <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded-md">
-        <p class="text-blue-700 flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-          </svg>
-          <span><strong>Note:</strong> If you're a new user, please read the registration process before proceeding.</span>
-        </p>
+      <div class="max-w-4xl mx-auto">
+        <!-- Registration Form -->
+        @livewire('tin.registration-form')
+        
+        <div class="mt-8 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-md">
+          <p class="text-blue-700 flex items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+            <span>
+              <strong>Note:</strong> Please ensure all information provided is accurate. 
+              Your TIN will be used for all tax-related transactions with the government.
+            </span>
+          </p>
+        </div>
       </div>
-
-      <div class="flex flex-col sm:flex-row gap-4">
-        <a href="#" class="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 py-3 rounded-md font-medium shadow-md hover:from-primary-700 hover:to-primary-800 transition transform hover:-translate-y-0.5 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-          </svg>
-          New Registration
-        </a>
-        <a href="#" class="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-md font-medium shadow-sm hover:bg-gray-50 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-          </svg>
-          Existing User Login
-        </a>
-      </div>
-    </div>
 
     <!-- Right Sidebar -->
     <div class="bg-gray-50 p-8 border-t md:border-t-0 md:border-l border-gray-200 md:w-1/4 flex flex-col justify-start md:justify-between">
