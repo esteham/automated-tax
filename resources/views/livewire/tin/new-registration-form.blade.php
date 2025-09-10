@@ -1,22 +1,17 @@
-<div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
-    <div class="text-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">TIN Registration</h2>
-        <p class="text-gray-600">Create your taxpayer account</p>
-        
-        @if (session()->has('message'))
-            <div class="mt-4 p-3 bg-green-100 text-green-700 rounded">
-                {{ session('message') }}
-            </div>
-        @endif
-        
-        @error('registration_error')
-            <div class="mt-4 p-3 bg-red-100 text-red-700 rounded">
-                {{ $message }}
-            </div>
-        @enderror
-    </div>
+<div class="space-y-6">
+    @if (session()->has('message'))
+        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
 
-    <form wire:submit.prevent="register" class="space-y-4">
+    @error('registration_error')
+        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            {{ $message }}
+        </div>
+    @enderror
+
+    <form wire:submit.prevent="register" class="space-y-6">
         <!-- Error Summary -->
         @if ($errors->any())
             <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
@@ -30,12 +25,19 @@
                         <h3 class="text-sm font-medium text-red-800">
                             There {{ $errors->count() === 1 ? 'is' : 'are' }} {{ $errors->count() }} {{ Str::plural('error', $errors->count()) }} with your submission
                         </h3>
+                        <div class="mt-2 text-sm text-red-700">
+                            <ul class="list-disc pl-5 space-y-1">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         @endif
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Username -->
             <div class="col-span-2">
                 <label for="username" class="block text-sm font-medium text-gray-700">Username <span class="text-red-500">*</span></label>
@@ -51,7 +53,8 @@
             <div class="col-span-2">
                 <label for="tin_number" class="block text-sm font-medium text-gray-700">TIN Number <span class="text-red-500">*</span></label>
                 <input type="text" id="tin_number" wire:model.live="tin_number" 
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('tin_number') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror">
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('tin_number') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
+                       placeholder="Enter 12-digit TIN number">
                 @error('tin_number')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -113,36 +116,34 @@
         </div>
 
         <!-- Terms and Conditions -->
-        <div class="mt-4">
-            <div class="flex items-start">
-                <div class="flex items-center h-5">
-                    <input id="terms" type="checkbox" wire:model.live="terms" 
-                           class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 @error('terms') border-red-300 text-red-900 focus:ring-red-500 @enderror">
-                </div>
-                <div class="ml-3 text-sm">
-                    <label for="terms" class="font-medium text-gray-700">I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms and Conditions</a></label>
-                    @error('terms')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
+        <div class="flex items-start">
+            <div class="flex items-center h-5">
+                <input id="terms" type="checkbox" wire:model.live="terms" 
+                       class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 @error('terms') border-red-300 text-red-900 focus:border-red-500 focus:ring-red-500 @enderror">
+            </div>
+            <div class="ml-3 text-sm">
+                <label for="terms" class="font-medium text-gray-700">I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms and Conditions</a> <span class="text-red-500">*</span></label>
+                @error('terms')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
             </div>
         </div>
 
         <!-- Submit Button -->
-        <div class="mt-6">
+        <div>
             <button type="submit" 
-                    wire:loading.attr="disabled"
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
-                <span wire:loading.remove>Register</span>
-                <span wire:loading>Processing...</span>
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Register for TIN
             </button>
         </div>
     </form>
 
-    <div class="mt-4 text-center text-sm text-gray-600">
-        Already have an account? 
-        <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:text-blue-500">
-            Sign in
-        </a>
+    <div class="mt-6 text-center text-sm">
+        <p class="text-gray-600">
+            Already have an account?
+            <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:text-blue-500">
+                Sign in
+            </a>
+        </p>
     </div>
 </div>

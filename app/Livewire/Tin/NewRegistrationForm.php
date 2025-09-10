@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
-class RegistrationForm extends Component
+class NewRegistrationForm extends Component
 {
     public $username;
     public $tin_number;
@@ -41,10 +41,9 @@ class RegistrationForm extends Component
         'password.confirmed' => 'The password confirmation does not match.',
     ];
 
-
     public function render()
     {
-        return view('livewire.tin.registration-form');
+        return view('livewire.tin.new-registration-form');
     }
 
     public function updated($propertyName)
@@ -97,4 +96,4 @@ class RegistrationForm extends Component
             \Log::error('Registration Error: ' . $e->getMessage());
         }
     }
-}
+    }

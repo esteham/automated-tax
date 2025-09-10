@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TIN Registration - Tax Portal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#1e40af',
-              900: '#1e3a8a',
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIN Registration - Tax Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    @livewireStyles
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
             }
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
         }
-      }
-    }
-  </script>
+    </script>
 </head>
 <body class="bg-gray-50 font-sans">
   <!-- Header -->
@@ -39,38 +40,37 @@
         </svg>
         <div>
           <h1 class="text-xl font-bold">Taxpayer's Portal</h1>
-          <p class="text-primary-100 text-sm">Government of Bangladesh</p>
-        </div>
       </div>
-      <button class="md:hidden p-2 rounded-md hover:bg-primary-600">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
     </div>
   </header>
 
-  <!-- Top Nav -->
-  <div class="hidden md:flex justify-end my-5">
-    <nav class="flex space-x-1">
-      <a href="{{ route('home') }}" class="px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-600 hover:text-white">Home</a>
-      <a href="#" class="px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-600 hover:text-white">Login</a>
-      <a href="#" class="px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white shadow-sm">Registration</a>
-      <a href="#" class="px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-600 hover:text-white">Forgot Password</a>
-      <a href="#" class="px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-600 hover:text-white">Registration Process</a>
-      <a href="#" class="px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-600 hover:text-white">Return Verification</a>
-    </nav>
-  </div>
-
   <!-- Main Content -->
-<div class="container mx-auto px-4 py-8">
-  <main class="bg-white rounded-xl shadow-lg overflow-hidden">
-    <div class="p-8">
-      <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Taxpayer's Identification Number (TIN) Registration</h1>
+  <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-extrabold text-gray-900">Taxpayer's Identification Number (TIN) Registration</h1>
+        <p class="mt-2 text-sm text-gray-600">Please fill in the form below to register for a TIN</p>
+      </div>
       
-      <div class="max-w-4xl mx-auto">
+      <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+        @if (session('status'))
+          <div class="mb-4 p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            {{ session('status') }}
+          </div>
+        @endif
+
+        @if ($errors->any())
+          <div class="mb-4 p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            <ul class="list-disc pl-5 space-y-1">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+        
         <!-- Registration Form -->
-        @livewire('tin.registration-form')
+        @livewire('tin.new-registration-form')
         
         <div class="mt-8 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-md">
           <p class="text-blue-700 flex items-start">
@@ -84,24 +84,10 @@
           </p>
         </div>
       </div>
-
-    <!-- Right Sidebar -->
-    <div class="bg-gray-50 p-8 border-t md:border-t-0 md:border-l border-gray-200 md:w-1/4 flex flex-col justify-start md:justify-between">
-      <h2 class="text-lg font-semibold text-gray-800 mb-4">Quick Links</h2>
-      <div class="flex flex-col gap-3">
-        <a href="#" class="bg-primary-600 text-white px-4 py-3 rounded-md font-medium shadow-md hover:bg-primary-700 transition flex items-center justify-center">
-          TIN Guidelines
-        </a>
-        <a href="#" class="bg-primary-600 text-white px-4 py-3 rounded-md font-medium shadow-md hover:bg-primary-700 transition flex items-center justify-center">
-            Check Status
-        </a>
-        <a href="#" class="bg-primary-600 text-white px-4 py-3 rounded-md font-medium shadow-md hover:bg-primary-700 transition flex items-center justify-center">
-            Download Certificate
-        </a>
-      </div>
     </div>
-  </main>
-</div>
+  </div>
+
+  @livewireScripts
 
 
   <!-- Footer -->

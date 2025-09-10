@@ -12,6 +12,14 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
+    
+    /**
+     * Get the tax profile associated with the user.
+     */
+    public function taxProfile()
+    {
+        return $this->hasOne(TaxProfile::class);
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +28,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username', // Made nullable in database
         'email',
         'phone',
         'password',

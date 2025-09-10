@@ -16,11 +16,12 @@ return new class extends Migration
 
             // Basic info
             $table->string('name');
+            $table->string('username')->nullable()->unique();
             $table->string('email')->unique();
             $table->string('phone')->nullable();
 
             // Profile
-            $table->string('profile_photo')->nullable(); // file path / media id
+            $table->string('profile_photo')->nullable(); // file path media id
             $table->enum('status', ['active','inactive'])->default('active');
 
             // Auth
