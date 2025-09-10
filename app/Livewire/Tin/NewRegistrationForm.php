@@ -83,11 +83,9 @@ class NewRegistrationForm extends Component
             // Commit transaction
             DB::commit();
 
-            // Log in the user
-            Auth::login($user);
-
-            // Redirect to dashboard
-            return redirect()->route('dashboard');
+            // Redirect to login page with success message
+            return redirect()->route('login')
+                ->with('status', 'Registration successful! Please log in with your credentials.');
 
         } catch (\Exception $e) {
             // Rollback transaction on error
