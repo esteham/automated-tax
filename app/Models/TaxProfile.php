@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TaxProfile extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'user_id',
         'tin_number',
@@ -45,6 +49,15 @@ class TaxProfile extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the activities for the tax profile.
+     */
+    public function activities()
+    {
+        return $this->morphMany(\App\Models\ActivityLog::class, 'subject')
+            ->latest();
     }
 
     /**

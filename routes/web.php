@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Auditor\DashboardController as AuditorDashboardController;
 use App\Http\Controllers\Tax\TaxController;
+use App\Http\Controllers\TinController;
 
 // Public Routes
 Route::get('/', function () {
@@ -29,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('tin')
         ->name('tin.')
         ->group(function () {
+            Route::get('/dashboard', [\App\Http\Controllers\TinController::class, 'dashboard'])->name('dashboard');
             Route::get('/request', \App\Livewire\Tin\TinRequestForm::class)->name('request');
             Route::post('/request', [\App\Livewire\Tin\TinRequestForm::class, 'submitRequest'])->name('submit-request');
         });

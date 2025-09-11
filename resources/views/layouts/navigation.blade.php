@@ -16,6 +16,18 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    @if(auth()->user()->taxProfile?->tin_number)
+                        <!-- TIN Information Link -->
+                        <x-nav-link :href="route('tin.dashboard')" :active="request()->routeIs('tin.*')">
+                            {{ __('TIN Information') }}
+                        </x-nav-link>
+                    @else
+                        <!-- Request TIN Link -->
+                        <x-nav-link :href="route('tin.request')" :active="request()->routeIs('tin.request')">
+                            {{ __('Request TIN') }}
+                        </x-nav-link>
+                    @endif
+
                     @if(auth()->user()->hasRole('admin'))
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
                             {{ __('Admin Panel') }}
@@ -75,6 +87,11 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        <!-- Request TIN Link -->
+                        <x-dropdown-link :href="route('tin.request')">
+                            {{ __('Request TIN') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -107,6 +124,18 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @if(auth()->user()->taxProfile?->tin_number)
+                <!-- TIN Information Link -->
+                <x-responsive-nav-link :href="route('tin.dashboard')" :active="request()->routeIs('tin.*')">
+                    {{ __('TIN Information') }}
+                </x-responsive-nav-link>
+            @else
+                <!-- Request TIN Link -->
+                <x-responsive-nav-link :href="route('tin.request')" :active="request()->routeIs('tin.request')">
+                    {{ __('Request TIN') }}
+                </x-responsive-nav-link>
+            @endif
 
             @if(auth()->user()->hasRole('admin'))
                 <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
@@ -143,6 +172,11 @@
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
+                </x-responsive-nav-link>
+
+                <!-- Request TIN Link -->
+                <x-responsive-nav-link :href="route('tin.request')">
+                    {{ __('Request TIN') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

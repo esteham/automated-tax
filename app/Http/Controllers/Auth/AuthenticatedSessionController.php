@@ -42,7 +42,12 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('auditor.dashboard');
         }
         
-        return redirect()->route('dashboard');
+        // Redirect to TIN dashboard if user has a TIN, otherwise to TIN request form
+        if ($user->taxProfile?->tin_number) {
+            return redirect()->route('tin.dashboard');
+        }
+        
+        return redirect()->route('tin.request');
     }
 
     /**
