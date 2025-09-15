@@ -98,6 +98,17 @@ class TinController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
+        $taxProfile = $user->taxProfile;
+        
+        if (!$taxProfile || !$taxProfile->tin_number) {
+            return redirect()->route('tin.registration')
+                ->with('error', 'You need to apply for a TIN number first.');
+        }
+        
+        return view('tin.dashboard', [
+            'user' => $user,
+            'taxProfile' => $taxProfile,
+        ]);
         
         // If user doesn't have a tax profile or TIN, redirect to request form
         if (!$user->taxProfile || !$user->taxProfile->tin_number) {

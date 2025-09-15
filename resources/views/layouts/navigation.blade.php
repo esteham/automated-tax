@@ -16,15 +16,15 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    @if(auth()->user()->taxProfile?->tin_number)
-                        <!-- TIN Information Link -->
-                        <x-nav-link :href="route('tin.dashboard')" :active="request()->routeIs('tin.*')">
-                            {{ __('TIN Information') }}
-                        </x-nav-link>
-                    @else
-                        <!-- Request TIN Link -->
-                        <x-nav-link :href="route('tin.request')" :active="request()->routeIs('tin.request')">
-                            {{ __('Request TIN') }}
+                    <!-- TIN Requests Link -->
+                    <x-nav-link :href="route('tin-requests.index')" :active="request()->routeIs('tin-requests.*')">
+                        {{ __('My TIN Requests') }}
+                    </x-nav-link>
+                    
+                    @if(!auth()->user()->taxProfile?->tin_number)
+                        <!-- Request New TIN Link -->
+                        <x-nav-link :href="route('tin-requests.create')" :active="request()->routeIs('tin-requests.create')">
+                            {{ __('Apply for TIN') }}
                         </x-nav-link>
                     @endif
 
@@ -32,17 +32,27 @@
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
                             {{ __('Admin Panel') }}
                         </x-nav-link>
+                        
+                        <!-- TIN Requests Management -->
+                        <x-nav-link :href="route('tin-requests.index')" :active="request()->routeIs('tin-requests.*')">
+                            {{ __('Manage TIN Requests') }}
+                        </x-nav-link>
+                    @endif
+                    
+                    @if(auth()->user()->hasRole('auditor'))
+                        <!-- TIN Requests Management for Auditors -->
+                        <x-nav-link :href="route('tin-requests.index')" :active="request()->routeIs('tin-requests.*')">
+                            {{ __('Review TIN Requests') }}
+                        </x-nav-link>
+                        
+                        <x-nav-link :href="route('auditor.dashboard')" :active="request()->routeIs('auditor.*')">
+                            {{ __('Auditor Panel') }}
+                        </x-nav-link>
                     @endif
 
                     @if(auth()->user()->hasRole('accountant'))
                         <x-nav-link :href="route('accountant.dashboard')" :active="request()->routeIs('accountant.*')">
                             {{ __('Accountant Panel') }}
-                        </x-nav-link>
-                    @endif
-
-                    @if(auth()->user()->hasRole('auditor'))
-                        <x-nav-link :href="route('auditor.dashboard')" :active="request()->routeIs('auditor.*')">
-                            {{ __('Auditor Panel') }}
                         </x-nav-link>
                     @endif
 

@@ -34,8 +34,14 @@ class RequestTinNumber extends Component
 
     public function mount()
     {
+        $user = auth()->user();
+        
+        if (!$user) {
+            return;
+        }
+
         // Load user's existing tax profile if available
-        $taxProfile = Auth::user()->taxProfile;
+        $taxProfile = $user->taxProfile;
         if ($taxProfile) {
             $this->nid_number = $taxProfile->nid_number;
             $this->nid_issuing_country = $taxProfile->nid_issuing_country ?? 'Bangladesh';
@@ -56,10 +62,28 @@ class RequestTinNumber extends Component
 
     public function submitRequest()
     {
-        $validatedData = $this->validate();
+        $this->validate();
         
-        // Verify security PIN
-        if (Auth::user()->security_pin !== $this->security_pin) {
+        // Get the authenticated user
+        $user = auth()->user();
+        
+        // Verify user is authenticated - this should never happen as the route is protected
+        if (!$user) {
+            $this->addError('form_error', 'You must be logged in to submit a TIN request.');
+            return;
+        }
+        
+        // Reload the user with their security pin
+        $user = \App\Models\User::find($user->id);
+        
+        // Check if security pin is set
+        if (empty($user->security_pin)) {
+            $this->addError('security_pin', 'No security PIN found. Please contact support.');
+            return;
+        }
+        
+        // Verify security pin
+        if ($user->security_pin !== $this->security_pin) {
             $this->addError('security_pin', 'The security PIN is incorrect.');
             return;
         }

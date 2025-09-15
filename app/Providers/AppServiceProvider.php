@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         Livewire::component('tin.registration-form', \App\Livewire\Tin\RegistrationForm::class);
         Livewire::component('dashboard', \App\Livewire\Dashboard::class);
         Livewire::component('tin.request-form', \App\Livewire\Tin\TinRequestForm::class);
+        Livewire::component('tin.request-tin-number', \App\Livewire\Tin\RequestTinNumber::class);
         
         // Set Livewire to use the app layout by default
         Livewire::setUpdateRoute(function ($handle) {

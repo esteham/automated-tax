@@ -15,24 +15,56 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// TIN Registration
-Route::view('/tin-registration', 'tin.registration')->name('tin.registration');
+// Temporary route to check and set security pin
+Route::get('/check-security-pin', function () {
+    $user = \App\Models\User::first();
+    
+    if (!$user) {
+        return 'No users found';
+    }
+    
+    // Check if security_pin is set
+    if (empty($user->security_pin)) {
+        // Set a default security pin if not set
+        $user->security_pin = '1234'; // This is just for testing, in production, use a secure random pin
+        $user->save();
+        return 'Security pin was not set. Set to 1234 for testing.';
+    }
+    
+    return 'Security pin is set to: ' . $user->security_pin;
+});
 
 // Authentication Routes
 require __DIR__.'/auth.php';
 
 // Authenticated Routes
 Route::middleware(['auth', 'verified'])->group(function () {
+    // TIN Routes
+    Route::prefix('tin')->name('tin.')->group(function () {
+        Route::get('/request', [\App\Http\Controllers\TinController::class, 'requestForm'])->name('request');
+        Route::view('/registration', 'tin.registration')->name('registration');
+        Route::get('/dashboard', [\App\Http\Controllers\TinController::class, 'dashboard'])->name('dashboard');
+        
+        // TIN Request submission
+        Route::post('/request', [\App\Http\Controllers\TinController::class, 'submitRequest'])->name('request.submit');
+    });
     // Main Dashboard - Using Livewire Component
     Route::get('/dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
 
     // TIN Request Routes
-    Route::prefix('tin')
-        ->name('tin.')
+    Route::prefix('tin-requests')
+        ->name('tin-requests.')
+        ->controller(\App\Http\Controllers\TinRequestController::class)
         ->group(function () {
-            Route::get('/dashboard', [\App\Http\Controllers\TinController::class, 'dashboard'])->name('dashboard');
-            Route::get('/request', \App\Livewire\Tin\TinRequestForm::class)->name('request');
-            Route::post('/request', [\App\Livewire\Tin\TinRequestForm::class, 'submitRequest'])->name('submit-request');
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{tinRequest}', 'show')->name('show');
+            Route::delete('/{tinRequest}', 'destroy')->name('destroy');
+            Route::post('/{tinRequest}/approve', 'approve')->name('approve');
+            Route::post('/{tinRequest}/reject', 'reject')->name('reject');
+            Route::get('/{tinRequest}/download-certificate', 'downloadCertificate')
+                ->name('download-certificate');
         });
 
     // Profile Routes
