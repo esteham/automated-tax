@@ -330,15 +330,9 @@
                     </div> -->
                     <h3 class="text-xl font-bold mb-3">File Tax Return</h3>
                     <p class="text-gray-600 mb-6">File your income tax return online in minutes. Our smart forms guide you through the process.</p>
-                    @auth
-                        <a href="{{ route('tax.returns.create') }}" class="btn-primary">
-                            File Now <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    @else
-                        <a href="{{ route('register') }}" class="btn-primary">
-                            File Now <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    @endauth
+                    <a href="{{ route('file.tax.return') }}" class="btn-primary">
+                        File Now <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
                 </div>
                 
                 <!-- Tax Calculator Card -->

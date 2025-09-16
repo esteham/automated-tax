@@ -15,9 +15,7 @@ class TinRequestController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('can:view,App\\Models\\TinRequest,tin_request')->only('show');
-        $this->middleware('can:update,App\\Models\\TinRequest,tin_request')->only(['approve', 'reject']);
+        // Middleware is now defined in the route file
     }
 
     /**

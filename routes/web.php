@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// File Tax Return Page
+Route::get('/file-tax-return', function () {
+    return view('file-tax-return');
+})->name('file.tax.return');
+
 // Temporary route to check and set security pin
 Route::get('/check-security-pin', function () {
     $user = \App\Models\User::first();
@@ -54,17 +59,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // TIN Request Routes
     Route::prefix('tin-requests')
         ->name('tin-requests.')
-        ->controller(\App\Http\Controllers\TinRequestController::class)
+        ->middleware('auth')
         ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/{tinRequest}', 'show')->name('show');
-            Route::delete('/{tinRequest}', 'destroy')->name('destroy');
-            Route::post('/{tinRequest}/approve', 'approve')->name('approve');
-            Route::post('/{tinRequest}/reject', 'reject')->name('reject');
-            Route::get('/{tinRequest}/download-certificate', 'downloadCertificate')
-                ->name('download-certificate');
+            Route::get('/', [\App\Http\Controllers\TinRequestController::class, 'index'])->name('index');
+            Route::get('/create', [\App\Http\Controllers\TinRequestController::class, 'create'])->name('create');
+            Route::post('/', [\App\Http\Controllers\TinRequestController::class, 'store'])->name('store');
+            Route::get('/{tin_request}', [\App\Http\Controllers\TinRequestController::class, 'show'])
+                ->name('show')
+                ->middleware('can:view,tin_request');
+            Route::post('/{tin_request}/approve', [\App\Http\Controllers\TinRequestController::class, 'approve'])
+                ->name('approve')
+                ->middleware('can:update,tin_request');
+            Route::post('/{tin_request}/reject', [\App\Http\Controllers\TinRequestController::class, 'reject'])
+                ->name('reject')
+                ->middleware('can:update,tin_request');
+            Route::get('/{tin_request}/download', [\App\Http\Controllers\TinRequestController::class, 'downloadPdf'])->name('download');
         });
 
     // Profile Routes
