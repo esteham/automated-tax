@@ -15,6 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// Public TIN Registration
+Route::prefix('tin')->name('tin.')->group(function () {
+    Route::view('/registration', 'tin.registration')->name('registration');
+});
+
+
 // File Tax Return Page
 Route::get('/file-tax-return', function () {
     return view('file-tax-return');
@@ -47,7 +53,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // TIN Routes
     Route::prefix('tin')->name('tin.')->group(function () {
         Route::get('/request', [\App\Http\Controllers\TinController::class, 'requestForm'])->name('request');
-        Route::view('/registration', 'tin.registration')->name('registration');
         Route::get('/dashboard', [\App\Http\Controllers\TinController::class, 'dashboard'])->name('dashboard');
         
         // TIN Request submission
