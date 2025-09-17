@@ -14,7 +14,7 @@ class TaxProfile extends Model
     protected $fillable = [
         'user_id',
         'tin_number',
-        'nid_number',
+        'nid',
         'nid_issuing_country',
         'nid_issue_date',
         'nid_expiry_date',

@@ -25,8 +25,8 @@
                 <!-- NID Number -->
                 <div class="col-span-2">
                     <label for="nid_number" class="block text-sm font-medium text-gray-700">NID Number <span class="text-red-500">*</span></label>
-                    <input type="text" id="nid_number" wire:model.live="nid_number" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('nid_number') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror">
+                    <input type="text" id="nid_number" wire:model="nid_number" 
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('nid_number') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror">
                     @error('nid_number')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -52,17 +52,17 @@
                 <!-- Issue Date -->
                 <div>
                     <label for="nid_issue_date" class="block text-sm font-medium text-gray-700">Issue Date <span class="text-red-500">*</span></label>
-                    <input type="date" id="nid_issue_date" wire:model.live="nid_issue_date" max="{{ now()->format('Y-m-d') }}"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('nid_issue_date') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror">
-                    @error('nid_issue_date')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
+                                <input type="date" id="nid_issue_date" wire:model="nid_issue_date"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('nid_issue_date') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror">
+                                @error('nid_issue_date')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
 
                 <!-- Expiry Date -->
                 <div>
                     <label for="nid_expiry_date" class="block text-sm font-medium text-gray-700">Expiry Date <span class="text-red-500">*</span></label>
-                    <input type="date" id="nid_expiry_date" wire:model.live="nid_expiry_date" 
+                    <input type="date" id="nid_expiry_date" wire:model="nid_expiry_date" 
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('nid_expiry_date') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror">
                     @error('nid_expiry_date')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -78,7 +78,7 @@
             <div class="grid grid-cols-1 gap-4">
                 <div>
                     <label for="security_pin" class="block text-sm font-medium text-gray-700">Enter Your 4-Digit Security PIN <span class="text-red-500">*</span></label>
-                    <input type="password" id="security_pin" wire:model.live="security_pin" 
+                    <input type="password" id="security_pin" wire:model.defer="security_pin" x-on:click.stop x-on:keydown.enter.prevent
                            class="mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('security_pin') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
                            maxlength="4" inputmode="numeric" pattern="\d{4}">
                     @error('security_pin')
@@ -100,6 +100,7 @@
         </div>
     </form>
 </div>
+
 
 @push('scripts')
 <script>

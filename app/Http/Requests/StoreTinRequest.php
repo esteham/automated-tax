@@ -25,7 +25,7 @@ class StoreTinRequest extends FormRequest
             'full_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
-            'nid_number' => 'required|string|max:50|unique:tin_requests,nid_number',
+            'nid' => 'required|string|max:50|unique:tin_requests,nid',
             'date_of_birth' => 'required|date|before:today',
             'father_name' => 'required|string|max:255',
             'mother_name' => 'required|string|max:255',

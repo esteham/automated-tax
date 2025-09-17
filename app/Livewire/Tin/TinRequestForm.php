@@ -12,13 +12,13 @@ class TinRequestForm extends Component
 {
     use WithFileUploads;
 
-    public $nid_number;
+    public $nid;
     public $nid_front_image;
     public $nid_back_image;
     public $submitted = false;
 
     protected $rules = [
-        'nid_number' => 'required|string|max:20',
+        'nid' => 'required|string|max:20',
         'nid_front_image' => 'required|image|max:2048', // 2MB max
         'nid_back_image' => 'required|image|max:2048',  // 2MB max
     ];
@@ -39,7 +39,7 @@ class TinRequestForm extends Component
 
         // Update the tax profile with the NID information
         $this->taxProfile->update([
-            'nid_number' => $this->nid_number,
+            'nid' => $this->nid,
             'nid_front_image' => $frontImagePath,
             'nid_back_image' => $backImagePath,
             'tin_status' => 'pending',
