@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTinRequest;
 use App\Models\TinRequest;
 use App\Models\User;
+use App\Notifications\NewTinRequestNotification;
+use App\Notifications\TinRequestApprovedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TinRequestController extends Controller
 {
+    use AuthorizesRequests;
+    
     public function __construct()
     {
         // Middleware is now defined in the route file
@@ -75,7 +81,9 @@ class TinRequestController extends Controller
         // Create the TIN request
         $tinRequest = TinRequest::create($data);
         
-        // TODO: Notify admin/auditor about new TIN request
+        // Notify admins and auditors about new TIN request
+        $adminsAndAuditors = User::role(['admin', 'auditor'])->get();
+        Notification::send($adminsAndAuditors, new NewTinRequestNotification($tinRequest));
         
         return redirect()->route('tin-requests.show', $tinRequest)
             ->with('success', 'Your TIN request has been submitted successfully!');
@@ -120,7 +128,8 @@ class TinRequestController extends Controller
         $certificatePath = $this->generateTinCertificate($tinRequest);
         $tinRequest->update(['certificate_path' => $certificatePath]);
         
-        // TODO: Send email notification to user
+        // Send approval notification to the user
+        $tinRequest->user->notify(new TinRequestApprovedNotification($tinRequest));
         
         return redirect()->route('tin-requests.show', $tinRequest)
             ->with('success', 'TIN request approved successfully!');
@@ -148,7 +157,8 @@ class TinRequestController extends Controller
             'approved_at' => now(),
         ]);
         
-        // TODO: Send email notification to user
+        // Send rejection notification to the user
+        $tinRequest->user->notify(new TinRequestRejectedNotification($tinRequest, $request->rejection_reason));
         
         return redirect()->route('tin-requests.show', $tinRequest)
             ->with('success', 'TIN request rejected successfully.');
@@ -182,5 +192,23 @@ class TinRequestController extends Controller
         Storage::put($filename, $pdf->output());
         
         return $filename;
+    }
+
+    /**
+     * Remove the specified TIN request from storage.
+     */
+    public function destroy(TinRequest $tinRequest)
+    {
+        $this->authorize('delete', $tinRequest);
+        
+        // Delete the certificate file if it exists
+        if ($tinRequest->certificate_path && Storage::exists($tinRequest->certificate_path)) {
+            Storage::delete($tinRequest->certificate_path);
+        }
+        
+        $tinRequest->delete();
+        
+        return redirect()->route('tin-requests.index')
+            ->with('success', 'TIN request has been deleted successfully.');
     }
 }

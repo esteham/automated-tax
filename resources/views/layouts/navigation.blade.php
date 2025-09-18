@@ -29,20 +29,34 @@
                     @endif
 
                     @if(auth()->user()->hasRole('admin'))
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                            {{ __('Admin Panel') }}
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                            {{ __('Admin Dashboard') }}
                         </x-nav-link>
                         
-                        <!-- TIN Requests Management -->
-                        <x-nav-link :href="route('tin-requests.index')" :active="request()->routeIs('tin-requests.*')">
-                            {{ __('Manage TIN Requests') }}
+                        <!-- TIN Requests Management with Badge -->
+                        <x-nav-link :href="route('admin.tin-requests.index')" :active="request()->routeIs('admin.tin-requests.*')">
+                            <div class="flex items-center">
+                                <span>{{ __('Manage TIN Requests') }}</span>
+                                @if($pendingTinRequestsCount > 0)
+                                    <span class="inline-flex items-center justify-center px-2 py-0.5 ms-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                                        {{ $pendingTinRequestsCount }}
+                                    </span>
+                                @endif
+                            </div>
                         </x-nav-link>
                     @endif
                     
                     @if(auth()->user()->hasRole('auditor'))
-                        <!-- TIN Requests Management for Auditors -->
+                        <!-- TIN Requests Management for Auditors with Badge -->
                         <x-nav-link :href="route('tin-requests.index')" :active="request()->routeIs('tin-requests.*')">
-                            {{ __('Review TIN Requests') }}
+                            <div class="flex items-center">
+                                <span>{{ __('Review TIN Requests') }}</span>
+                                @if($pendingTinRequestsCount > 0)
+                                    <span class="inline-flex items-center justify-center px-2 py-0.5 ms-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                                        {{ $pendingTinRequestsCount }}
+                                    </span>
+                                @endif
+                            </div>
                         </x-nav-link>
                         
                         <x-nav-link :href="route('auditor.dashboard')" :active="request()->routeIs('auditor.*')">
@@ -148,8 +162,19 @@
             @endif
 
             @if(auth()->user()->hasRole('admin'))
-                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                    {{ __('Admin Panel') }}
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                    {{ __('Admin Dashboard') }}
+                </x-responsive-nav-link>
+                
+                <x-responsive-nav-link :href="route('admin.tin-requests.index')" :active="request()->routeIs('admin.tin-requests.*')">
+                    <div class="flex items-center">
+                        <span>{{ __('Manage TIN Requests') }}</span>
+                        @if($pendingTinRequestsCount > 0)
+                            <span class="inline-flex items-center justify-center px-2 py-0.5 ms-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                                {{ $pendingTinRequestsCount }}
+                            </span>
+                        @endif
+                    </div>
                 </x-responsive-nav-link>
             @endif
 

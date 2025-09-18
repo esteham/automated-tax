@@ -56,7 +56,7 @@
                             </div>
                             
                             <div class="col-md-6 mb-3">
-                                <label for="nid_number" class="form-label">National ID Number <span class="text-danger">*</span></label>
+                                <label for="nid_number" class="form-label">National ID (NID) <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('nid_number') is-invalid @enderror" 
                                        id="nid_number" name="nid_number" 
                                        value="{{ old('nid_number') }}" required>

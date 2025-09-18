@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 
 class TinRequest extends Model
 {
+    use SoftDeletes, Authorizable;
+    
     protected $fillable = [
         'user_id',
         'full_name',

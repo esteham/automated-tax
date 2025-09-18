@@ -16,6 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         TaxReturn::class => TaxReturnPolicy::class,
+        \App\Models\TinRequest::class => \App\Policies\TinRequestPolicy::class,
     ];
 
     /**

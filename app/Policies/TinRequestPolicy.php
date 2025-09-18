@@ -13,9 +13,8 @@ class TinRequestPolicy
      */
     public function viewAny(User $user): bool
     {
-        // Any authenticated user can view their own TIN requests
-        // Admins and auditors can view all TIN requests
-        return true;
+        // Only admins and auditors can view all TIN requests
+        return $user && $user->hasAnyRole(['admin', 'auditor']);
     }
 
     /**
@@ -25,8 +24,8 @@ class TinRequestPolicy
     {
         // Users can view their own TIN requests
         // Admins and auditors can view any TIN request
-        return $user->id === $tinRequest->user_id || 
-               $user->hasRole(['admin', 'auditor']);
+        return $user && ($user->id === $tinRequest->user_id || 
+               $user->hasRole(['admin', 'auditor']));
     }
 
     /**

@@ -79,6 +79,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->name('reject')
                 ->middleware('can:update,tin_request');
             Route::get('/{tin_request}/download', [\App\Http\Controllers\TinRequestController::class, 'downloadPdf'])->name('download');
+            Route::delete('/{tin_request}', [\App\Http\Controllers\TinRequestController::class, 'destroy'])
+                ->name('destroy')
+                ->middleware('can:delete,tin_request');
         });
 
     // Profile Routes
@@ -137,7 +140,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Routes
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        // Add more admin routes here
+        
+        // TIN Requests Management
+        Route::resource('tin-requests', \App\Http\Controllers\Admin\TinRequestController::class)
+            ->only(['index', 'show', 'destroy']);
+            
+        // TIN Request Actions
+        Route::prefix('tin-requests/{tinRequest}')->name('tin-requests.')->group(function () {
+            Route::post('approve', [\App\Http\Controllers\Admin\TinRequestController::class, 'approve'])
+                ->name('approve');
+                
+            Route::post('reject', [\App\Http\Controllers\Admin\TinRequestController::class, 'reject'])
+                ->name('reject');
+                
+            Route::get('certificate', [\App\Http\Controllers\Admin\TinRequestController::class, 'downloadCertificate'])
+                ->name('certificate');
+        });
     });
 
     // Accountant Routes

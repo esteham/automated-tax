@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Share pending TIN requests count with navigation view
+        View::composer('layouts.navigation', 'App\Http\View\Composers\NavigationComposer');
+
         // Register Livewire components
         Livewire::component('tin.registration-form', \App\Livewire\Tin\RegistrationForm::class);
         Livewire::component('dashboard', \App\Livewire\Dashboard::class);

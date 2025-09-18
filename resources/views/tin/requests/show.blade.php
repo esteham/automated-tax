@@ -63,9 +63,52 @@
                             
                             @if($request->isApproved() && $request->certificate_path)
                                 <div class="mt-4">
-                                    <a href="{{ route('tin-requests.download-certificate', $request) }}" class="btn btn-primary">
-                                        <i class="fas fa-download me-1"></i> Download TIN Certificate
-                                    </a>
+                                    <h5 class="mb-3 border-bottom pb-2">TIN Certificate</h5>
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        Your TIN certificate is ready. You can download it using the button below.
+                                    </div>
+                                    
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ route('tin-requests.download-certificate', $request) }}" class="btn btn-primary">
+                                            <i class="fas fa-download me-1"></i> Download Certificate (PDF)
+                                        </a>
+                                        
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#certificatePreviewModal">
+                                            <i class="fas fa-eye me-1"></i> Preview Certificate
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mt-3 text-muted small">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Please save this certificate for your records. You'll need it for tax-related activities.
+                                    </div>
+                                </div>
+                                
+                                <!-- Certificate Preview Modal -->
+                                <div class="modal fade" id="certificatePreviewModal" tabindex="-1" aria-labelledby="certificatePreviewModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="certificatePreviewModalLabel">TIN Certificate Preview</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body p-0">
+                                                <iframe 
+                                                    src="{{ route('tin-requests.download-certificate', $request) }}#toolbar=0&navpanes=0" 
+                                                    style="width: 100%; height: 70vh; border: none;">
+                                                </iframe>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="{{ route('tin-requests.download-certificate', $request) }}" class="btn btn-primary">
+                                                    <i class="fas fa-download me-1"></i> Download
+                                                </a>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    <i class="fas fa-times me-1"></i> Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             @endif
                             
