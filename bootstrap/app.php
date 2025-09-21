@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
+            'redirect_admin_from_user_dashboard' => \App\Http\Middleware\RedirectAdminsFromUserDashboard::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -59,7 +59,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/request', [\App\Http\Controllers\TinController::class, 'submitRequest'])->name('request.submit');
     });
     // Main Dashboard - Using Livewire Component
-    Route::get('/dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
+    Route::get('/dashboard', \App\Livewire\Dashboard::class)
+        ->middleware('redirect_admin_from_user_dashboard')
+        ->name('dashboard');
 
     // TIN Request Routes
     Route::prefix('tin-requests')
